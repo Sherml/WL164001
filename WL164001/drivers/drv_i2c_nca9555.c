@@ -8,19 +8,22 @@
 // *
 
 #include    "drv_i2c_nca9555.h"
+#include    "tool.h"
 
 #define     DBG_TAG "nca9555"
 #define     DBG_LVL DBG_INFO
 #include    <rtdbg.h>
 
-static struct rt_nca9555 nca9555_obj[] =
+struct rt_nca9555 nca9555_obj[] =
 {
         NCA9555_config_0,
         NCA9555_config_1,
         NCA9555_config_2,
+#ifdef USING_SLAVE_BOARD
         NCA9555_config_3,
         NCA9555_config_4,
         NCA9555_config_5,
+#endif
 };
 
 #define ITEM_NUM(items) sizeof(items) / sizeof(items[0])

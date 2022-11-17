@@ -7,14 +7,14 @@
  * Date           Author       Notes
  * 2022-11-03     liwentai       the first version
  */
-#ifndef APPLICATIONS_HW_MODULE_INCLUDE_AMR_H_
-#define APPLICATIONS_HW_MODULE_INCLUDE_AMR_H_
+#ifndef APPLICATIONS_HW_MODULE_INCLUDE_STAT_H_
+#define APPLICATIONS_HW_MODULE_INCLUDE_STAT_H_
 
 #include "tool.h"
 #include <drv_i2c_nca9555.h>
 
-rt_device_t amr_init(const char* dev_name);
-void check_key(rt_device_t amr);
-void check_lock(rt_device_t amr);
+rt_err_t stat_init(rt_device_t stat);
+void check_key(WL164001_t board);
+void check_lock(WL164001_t board);
 
-#endif /* APPLICATIONS_HW_MODULE_INCLUDE_AMR_H_ */
+#endif /* APPLICATIONS_HW_MODULE_INCLUDE_STAT_H_ */

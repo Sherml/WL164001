@@ -13,6 +13,9 @@
 #include "tool.h"
 #include <drv_i2c_nca9555.h>
 
-rt_device_t led_init(const char* dev_name);
+rt_err_t led_init(rt_device_t led);
+rt_err_t led_only_red(int i, WL164001_t board);
+rt_err_t led_only_green(int i, WL164001_t board);
+void key_status_led(WL164001_t board);
 
 #endif /* APPLICATIONS_HW_MODULE_INCLUDE_LED_H_ */

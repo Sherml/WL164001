@@ -8,6 +8,7 @@
  * 2022-10-28     liwentai       the first version
  */
 #include "M606.h"
+#include <tool.h>
 
 #define DBG_TAG "M606"
 #define DBG_LVL DBG_INFO

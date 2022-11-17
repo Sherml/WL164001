@@ -15,7 +15,6 @@
 #include <board.h>
 #include <string.h>
 #include <stdio.h>
-#include <tool.h>
 
 #define ITEM_NUM(items) sizeof(items) / sizeof(items[0])
 
@@ -47,12 +46,14 @@
  */
 #define M606_config_0           \
     {                           \
+        .name      = "M606_0",  \
         .uart_name = "uart3",   \
         .pos       = 0          \
     }
 
 #define M606_config_1           \
     {                           \
+        .name      = "M606_1",  \
         .uart_name = "uart2",   \
         .pos       = 6          \
     }
@@ -77,6 +78,8 @@ struct M606_device
 
 struct rt_M606_config
 {
+    M606_device_t dev;
+    const char* name;
     const char* uart_name;
     rt_off_t pos;
 };
@@ -87,8 +90,8 @@ struct rx_msg
     rt_size_t size;
 };
 
-extern M606_device_t M606_dev[];
 
+M606_device_t M606_device_find(const char *M606_name);
 rt_err_t scan_rfid(M606_device_t M606);
 int rfid_printf(int i);
 

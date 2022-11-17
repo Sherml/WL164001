@@ -13,8 +13,8 @@
 #include "tool.h"
 #include <drv_i2c_nca9555.h>
 
-rt_device_t elec_init();
-void elec_open(rt_device_t elec,int i);
-void elec_close(rt_device_t elec,int i);
+rt_err_t elec_init(rt_device_t elec);
+rt_err_t elec_open(int i, WL164001_t board);
+rt_err_t elec_close(int i, WL164001_t board);
 
 #endif /* APPLICATIONS_HW_MODULE_INCLUDE_ELEC_H_ */

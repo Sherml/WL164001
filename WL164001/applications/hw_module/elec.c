@@ -9,74 +9,62 @@
  */
 #include "elec.h"
 
-void elec_open(rt_device_t elec,int i){
+#define     DBG_TAG "ELEC"
+#define     DBG_LVL DBG_LOG
+#include    <rtdbg.h>
+
+rt_err_t elec_open(int i, WL164001_t board){
     char open[6],close[6];
-    rt_sprintf(open, "%s%d%s%d","IO", 0, "_", i);
-    rt_sprintf(close, "%s%d%s%d","IO", 1, "_", i);
+    rt_sprintf(open, "%s%d%s%d","IO", 0, "_", i - board.pos);
+    rt_sprintf(close, "%s%d%s%d","IO", 1, "_", i - board.pos);
 
-    rt_device_control(elec, OUTPUT, close);
-    rt_device_write(elec, PIN_LOW, close, 0);
-
-    rt_device_control(elec, OUTPUT, open);
-    rt_device_write(elec, PIN_HIGH, open, 0);
-    rt_thread_mdelay(50);
-    rt_device_write(elec, PIN_LOW, open, 0);
-}
-
-void elec_close(rt_device_t elec,int i){
-    char open[6],close[6];
-    rt_sprintf(open, "%s%d%s%d","IO", 0, "_", i);
-    rt_sprintf(close, "%s%d%s%d","IO", 1, "_", i);
-
-    rt_device_control(elec, OUTPUT, open);
-    rt_device_write(elec, PIN_LOW, open, 0);
-
-    rt_device_control(elec, OUTPUT, close);
-    rt_device_write(elec, PIN_HIGH, close, 0);
-    rt_thread_mdelay(50);
-    rt_device_write(elec, PIN_LOW, close, 0);
-
-}
-
-rt_device_t elec_init(){
-    rt_device_t elec = RT_NULL;
-
-    elec = rt_device_find("ELEC");
-    rt_device_open(elec, RT_DEVICE_OFLAG_RDWR);
-
-    for(int i=0; i<APP_NUM; i++){
-        elec_open(elec, i);
+    if (i - board.pos > APP_NUM_MAIN) {
+        LOG_E("open lock: the chosen pin is conflict with board hardware.");
+        return -RT_ERROR;
     }
-//    for(int i=0; i<APP_NUM; i++){
-//        elec_close(elec, i);
-//    }
-    return elec;
-}
 
-static int operate_lock(int argc, char* argv[]){
-    int i = 0;
-    if(argc == 2){
-        i = atoi(argv[1]);
-        if ((i>=0)&&(i<APP_NUM)){
-            rt_device_t dev = rt_device_find("ELEC");
-            rt_kprintf("the NO.%d lock will be open...\n",i);
-            rt_thread_mdelay(500);
-            elec_open(dev, i);
-//            rt_thread_mdelay(500);
-//            elec_close(dev, i);
-        }else{
-            goto __exit;
-        }
-    }else{
-        goto __exit;
-    }
+    rt_device_control(board.elec, OUTPUT, close);
+    rt_device_write(board.elec, PIN_LOW, close, 0);
+
+    rt_device_control(board.elec, OUTPUT, open);
+    rt_device_write(board.elec, PIN_HIGH, open, 0);
+    rt_thread_mdelay(50);
+    rt_device_write(board.elec, PIN_LOW, open, 0);
 
     return RT_EOK;
-
-    __exit:
-    rt_kprintf("put in a number for the ELEC work.\n");
-    return -RT_ERROR;
 }
-MSH_CMD_EXPORT(operate_lock , open the lock);
+
+rt_err_t elec_close(int i, WL164001_t board){
+    char open[6],close[6];
+    rt_sprintf(open, "%s%d%s%d","IO", 0, "_", i - board.pos);
+    rt_sprintf(close, "%s%d%s%d","IO", 1, "_", i - board.pos);
+
+    if (i - board.pos > APP_NUM_MAIN) {
+        LOG_E("close lock: the chosen pin is conflict with board hardware.");
+        return -RT_ERROR;
+    }
+
+    rt_device_control(board.elec, OUTPUT, open);
+    rt_device_write(board.elec, PIN_LOW, open, 0);
+
+    rt_device_control(board.elec, OUTPUT, close);
+    rt_device_write(board.elec, PIN_HIGH, close, 0);
+    rt_thread_mdelay(50);
+    rt_device_write(board.elec, PIN_LOW, close, 0);
+
+    return RT_EOK;
+}
+
+rt_err_t elec_init(rt_device_t elec)
+{
+    if (elec == RT_NULL) {
+        LOG_E("elec device is not exit.");
+        return -RT_ERROR;
+    }
+    rt_device_open(elec, RT_DEVICE_OFLAG_RDWR);
+    return RT_EOK;
+}
+
+
 
 

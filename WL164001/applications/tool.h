@@ -13,12 +13,23 @@
 #include <rtthread.h>
 #include <rtdevice.h>
 #include <board.h>
-#include <amr.h>
-#include <led.h>
-#include <elec.h>
 #include "M606_module/M606.h"
 
-//#define USING_SLAVE_BOARD
+
+/* 单板最大同类器件个数 */
+#define APP_NUM_MAIN 6
+
+/* 副板使用设置 */
+#define USING_SLAVE_BOARD
+#ifdef USING_SLAVE_BOARD
+#define BOARD_NUM 2
+#define APP_NUM 12
+#endif
+#ifndef USING_SLAVE_BOARD
+#define BOARD_NUM 1
+#define APP_NUM 6
+#endif
+
 #define ITEM_NUM(items) sizeof(items) / sizeof(items[0])
 
 typedef enum
@@ -52,12 +63,23 @@ typedef struct tagLockRfid
 
 } key_info_t;
 
+typedef struct WL164001_board
+{
+    const char* led_name;
+    const char* stat_name;
+    const char* elec_name;
+    const char* M606_name;
+    int pos;
 
-#ifdef USING_SLAVE_BOARD
-#define APP_NUM 12
-#endif
-#ifndef USING_SLAVE_BOARD
-#define APP_NUM 6
-#endif
+    rt_device_t led;
+    rt_device_t stat;
+    rt_device_t elec;
+    M606_device_t M606;
+} WL164001_t;
+
+extern WL164001_t board[BOARD_NUM];
 extern key_info_t key[APP_NUM];
+
+
+
 #endif /* APPLICATIONS_HW_MODULE_HW_ALL_WORK_C_ */

@@ -8,6 +8,7 @@
  * 2022-11-16     liwentai       the first version
  */
 #include "M606.h"
+#include <tool.h>
 
 #define DBG_TAG "M606"
 #define DBG_LVL DBG_INFO
@@ -20,7 +21,6 @@ struct rt_M606_config M606_config[]=
         M606_config_1,
 #endif
 };
-M606_device_t M606_dev[ITEM_NUM(M606_config)];
 
 static rt_err_t M606_rx(rt_device_t dev, rt_size_t size)
 {
@@ -80,17 +80,54 @@ static M606_device_t M606_init(const char* uart_name, rt_off_t pos)
     return M606;
 }
 
+static rt_err_t rt_device_M606_register(M606_device_t dev, const char* M606_name)
+{
+    rt_device_t device = RT_NULL;
+    device = rt_calloc(1, sizeof(struct rt_device));
+    if (device == RT_NULL) {
+        LOG_E("can't allocate memory for NCA9555 device");
+        free(device);
+    }
 
-static int rt_M606_open(void)
+    /* register device */
+    device->type = RT_Device_Class_Miscellaneous;
+
+    device->init = RT_NULL;
+    device->open = RT_NULL;
+    device->close = RT_NULL;
+    device->read = RT_NULL;
+    device->write = RT_NULL;
+    device->control = RT_NULL;
+
+    device->user_data = (void*) dev;
+
+    return rt_device_register(device, M606_name, RT_DEVICE_FLAG_STANDALONE);
+}
+
+M606_device_t M606_device_find(const char *M606_name)
+{
+    M606_device_t M606;
+    rt_device_t dev = rt_device_find(M606_name);
+    if (dev == RT_NULL) {
+        LOG_E("M606 %s is not exist", M606_name);
+        return RT_NULL;
+    }
+
+    M606 = (M606_device_t)dev->user_data;
+    return M606;
+}
+
+static int rt_hw_M606_init(void)
 {
     int i;
-
     for (i = 0; i < ITEM_NUM(M606_config); i++)
     {
-        M606_dev[i] = M606_init(M606_config[i].uart_name, M606_config[i].pos);
-        if (M606_dev[i]== RT_NULL) {
+        M606_config[i].dev = M606_init(M606_config[i].uart_name, M606_config[i].pos);
+        if (M606_config[i].dev == RT_NULL) {
             LOG_E("M606 device on %s init failed.", M606_config[i].uart_name);
+            return -RT_ERROR;
         }
+        rt_device_M606_register(M606_config[i].dev, M606_config[i].name);
     }
     for (i = 0; i < APP_NUM; i++){
         for (int j = 0; j < 5; j++){
@@ -100,4 +137,4 @@ static int rt_M606_open(void)
     }
     return RT_EOK;
 }
-INIT_COMPONENT_EXPORT(rt_M606_open);
+INIT_COMPONENT_EXPORT(rt_hw_M606_init);

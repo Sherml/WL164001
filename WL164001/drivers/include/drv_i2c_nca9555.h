@@ -11,13 +11,14 @@
 #include    <rtdevice.h>
 #include    <rtthread.h>
 #include    <board.h>
+#include    <tool.h>
 
 #ifndef APPLICATIONS_I2C_MODULE_I2C_MODULE_H_
 #define APPLICATIONS_I2C_MODULE_I2C_MODULE_H_
 
 #define RT_I2C_NCA9555_NAME_1 "i2c1"
 #define RT_I2C_NCA9555_NAME_2 "i2c2"
-#define RT_I2C_AMR_ADDR     0x20
+#define RT_I2C_STAT_ADDR     0x20
 #define RT_I2C_LED_ADDR     0x21
 #define RT_I2C_ELEC_ADDR    0x22
 
@@ -38,9 +39,9 @@
 //NCA9555_config
 #define NCA9555_config_0                     \
     {                                        \
-        .addr       = RT_I2C_AMR_ADDR,       \
+        .addr       = RT_I2C_STAT_ADDR,      \
         .bus_name   = RT_I2C_NCA9555_NAME_1, \
-        .name       = "AMR1"                 \
+        .name       = "STAT1"                \
     }
 
 #define NCA9555_config_1                     \
@@ -59,9 +60,9 @@
 
 #define NCA9555_config_3                     \
     {                                        \
-        .addr       = RT_I2C_AMR_ADDR,       \
+        .addr       = RT_I2C_STAT_ADDR,      \
         .bus_name   = RT_I2C_NCA9555_NAME_2, \
-        .name       = "AMR2"                 \
+        .name       = "STAT2"                \
     }
 
 #define NCA9555_config_4                     \

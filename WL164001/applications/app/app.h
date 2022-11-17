@@ -11,7 +11,10 @@
 #define APPLICATIONS_INCLUDE_APP_H_
 
 #include <tool.h>
-
+#include <stat.h>
+#include <led.h>
+#include <elec.h>
+#include "M606_module/M606.h"
 
 #define MOD_LED                          \
     {                                    \
@@ -24,8 +27,8 @@
 
 #define MOD_AMR                          \
     {                                    \
-        .name       = "AMR",             \
-        .entry      = amr_entry,         \
+        .name       = "STAT",            \
+        .entry      = stat_entry,        \
         .stack_size = 1024,              \
         .priority   = 17,                \
         .tick       = 15,                \
@@ -58,6 +61,26 @@
         .tick       = 15,                \
     }
 
+#define BOARD_config_0                   \
+    {                                    \
+        .led_name       = "LED1",        \
+        .stat_name      = "STAT1",       \
+        .elec_name      = "ELEC1",       \
+        .M606_name      = "M606_0",      \
+        .pos            = 0              \
+    }
+
+#define BOARD_config_1                   \
+    {                                    \
+        .led_name       = "LED2",        \
+        .stat_name      = "STAT2",       \
+        .elec_name      = "ELEC2",       \
+        .M606_name      = "M606_1",      \
+        .pos            = 6              \
+    }
+
+
+
 typedef struct app_module
 {
     const char*     name;
@@ -68,10 +91,13 @@ typedef struct app_module
     rt_uint32_t     tick;
 } app_module_t;
 
+
+
+
 extern rt_sem_t app_flag;
 
 extern void led_entry(void* parameter);
-extern void amr_entry(void* parameter);
+extern void stat_entry(void* parameter);
 extern void elec_entry(void* parameter);
 extern void rfid_entry(void* parameter);
 extern void flash_entry(void* parameter);
