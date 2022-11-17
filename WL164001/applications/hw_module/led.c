@@ -38,9 +38,13 @@ rt_err_t led_only_red(int i, WL164001_t board)
         LOG_E("check the number of led_work.");
         return -RT_ERROR;
     }
+    int off = 0;
     char red[6], green[6];
-    rt_sprintf(red, "%s%d%s%d", "IO", 0, "_", i - board.pos);
-    rt_sprintf(green, "%s%d%s%d", "IO", 1, "_", i - board.pos);
+
+    off = i - board.pos;
+    rt_sprintf(red, "%s%d%s%d", "IO", 0, "_", off);
+    rt_sprintf(green, "%s%d%s%d", "IO", 1, "_", off);
+//    LOG_D("%s",red);
     rt_device_write(board.led, PIN_HIGH, red, 0); //在位亮红灯
     rt_device_write(board.led, PIN_LOW, green, 0);
     return RT_EOK;
@@ -52,9 +56,12 @@ rt_err_t led_only_green(int i, WL164001_t board)
         LOG_E("check the number of led_work.");
         return -RT_ERROR;
     }
+    int off = 0;
     char red[6], green[6];
-    rt_sprintf(red, "%s%d%s%d", "IO", 0, "_", i - board.pos);
-    rt_sprintf(green, "%s%d%s%d", "IO", 1, "_", i - board.pos);
+
+    off = i - board.pos;
+    rt_sprintf(red, "%s%d%s%d", "IO", 0, "_", off);
+    rt_sprintf(green, "%s%d%s%d", "IO", 1, "_", off);
     rt_device_write(board.led, PIN_LOW, red, 0); //不在位亮绿灯
     rt_device_write(board.led, PIN_HIGH, green, 0);
     return RT_EOK;

@@ -35,26 +35,31 @@ rt_err_t stat_init(rt_device_t stat)
 
 static rt_uint8_t get_amr(int i, WL164001_t board)
 {
+    int off = 0;
     if (i>=APP_NUM) {
         LOG_E("check the number of stat_work.");
         return -RT_ERROR;
     }
     char str[6];
     rt_uint8_t amr_status;
-    rt_sprintf(str, "%s%d%s%d", "IO", 0, "_", i - board.pos);
+    off = i - board.pos;
+    rt_sprintf(str, "%s%d%s%d", "IO", 0, "_", off);
+    LOG_D("%s",str);
     amr_status = rt_device_read(board.stat, 0, str, 0);
     return amr_status;
 }
 
 static rt_uint8_t get_lock(int i, WL164001_t board)
 {
+    int off = 0;
     if (i>=APP_NUM) {
         LOG_E("check the number of stat_work.");
         return -RT_ERROR;
     }
     char str[6];
     rt_uint8_t lock_status;
-    rt_sprintf(str, "%s%d%s%d", "IO", 0, "_", i - board.pos);
+    off = i - board.pos;
+    rt_sprintf(str, "%s%d%s%d", "IO", 0, "_", off);
     lock_status = rt_device_read(board.stat, 0, str, 0);
     return lock_status;
 }

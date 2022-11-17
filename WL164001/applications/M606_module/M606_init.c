@@ -85,7 +85,7 @@ static rt_err_t rt_device_M606_register(M606_device_t dev, const char* M606_name
     rt_device_t device = RT_NULL;
     device = rt_calloc(1, sizeof(struct rt_device));
     if (device == RT_NULL) {
-        LOG_E("can't allocate memory for NCA9555 device");
+        LOG_E("can't allocate memory for M606 device");
         free(device);
     }
 
@@ -109,7 +109,7 @@ M606_device_t M606_device_find(const char *M606_name)
     M606_device_t M606;
     rt_device_t dev = rt_device_find(M606_name);
     if (dev == RT_NULL) {
-        LOG_E("M606 %s is not exist", M606_name);
+        LOG_E("device %s is not exist", M606_name);
         return RT_NULL;
     }
 

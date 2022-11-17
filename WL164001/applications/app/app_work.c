@@ -27,7 +27,7 @@ void led_entry(void* parameter)
         }
     }
     while (1) {
-        rt_sem_take(app_flag, RT_WAITING_FOREVER);
+//        rt_sem_take(app_flag, RT_WAITING_FOREVER);
         for (i = 0; i < BOARD_NUM; ++i) {
             key_status_led(board[i]);
         }
