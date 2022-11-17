@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2006-2021, RT-Thread Development Team
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Change Logs:
+ * Date           Author       Notes
+ * 2022-11-02     liwentai       the first version
+ */
+#ifndef APPLICATIONS_HW_MODULE_HW_ALL_WORK_C_
+#define APPLICATIONS_HW_MODULE_HW_ALL_WORK_C_
+
+#include <rtthread.h>
+#include <rtdevice.h>
+#include <board.h>
+#include <amr.h>
+#include <led.h>
+#include <elec.h>
+#include "M606_module/M606.h"
+
+//#define USING_SLAVE_BOARD
+#define ITEM_NUM(items) sizeof(items) / sizeof(items[0])
+
+typedef enum
+{
+    key_out = 1,     //取走
+    key_in,      //插入
+    key_erro,    //不匹配
+} key_status_t;
+
+typedef enum
+{
+    unlock,
+    lock,
+} lock_status_t;
+
+typedef struct
+{
+    char ch[11];
+    rt_uint8_t code[5];
+} key_code_t;
+
+//钥匙状态
+typedef struct tagLockRfid
+{
+    rt_uint8_t cur_rfid_code[5];
+    rt_uint8_t last_rfid_code[5];
+    key_code_t user_data;
+    key_status_t key_status;
+    key_status_t last_key_status;
+    lock_status_t lock_status;
+
+} key_info_t;
+
+
+#ifdef USING_SLAVE_BOARD
+#define APP_NUM 12
+#endif
+#ifndef USING_SLAVE_BOARD
+#define APP_NUM 6
+#endif
+extern key_info_t key[APP_NUM];
+#endif /* APPLICATIONS_HW_MODULE_HW_ALL_WORK_C_ */
