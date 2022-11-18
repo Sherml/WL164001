@@ -17,7 +17,7 @@ rt_sem_t app_flag = RT_NULL;
 static app_module_t obj[] =
 {
         MOD_LED,
-//        MOD_AMR,
+        MOD_AMR,
         MOD_ELEC,
         MOD_RFID,
         MOD_FLASH,
@@ -62,5 +62,4 @@ int app_open()
     }
     return RT_EOK;
 }
-
 INIT_COMPONENT_EXPORT(app_open);

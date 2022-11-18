@@ -37,7 +37,7 @@
     PARITY_NONE,            \
     BIT_ORDER_LSB,          \
     NRZ_NORMAL,             \
-    128,                   \
+    200,                    \
     0                       \
 }
 
@@ -70,8 +70,8 @@ struct M606_device
 {
     rt_device_t dev;
     struct rt_messagequeue rx_mq;
-    rt_off_t pos;
-    char msg_pool[4000];
+    int pos;
+    char msg_pool[2000];
 
     struct M606_ops ops;
 };

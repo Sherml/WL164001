@@ -13,6 +13,9 @@
 #define     DBG_LVL DBG_LOG
 #include    <rtdbg.h>
 
+static rt_uint8_t check_amr[APP_NUM][7] = { 0 };
+static rt_uint8_t check_elec[APP_NUM][7] = { 0 };
+
 rt_err_t stat_init(rt_device_t stat)
 {
     char str[6];
@@ -43,8 +46,8 @@ static rt_uint8_t get_amr(int i, WL164001_t board)
     char str[6];
     rt_uint8_t amr_status;
     off = i - board.pos;
-    rt_sprintf(str, "%s%d%s%d", "IO", 0, "_", off);
-    LOG_D("%s",str);
+    rt_sprintf(str, "%s%d%s%d", "IO", 1, "_", off);
+//    LOG_D("%s",str);
     amr_status = rt_device_read(board.stat, 0, str, 0);
     return amr_status;
 }
@@ -68,7 +71,6 @@ static rt_uint8_t get_lock(int i, WL164001_t board)
  * @brief 钥匙在位检测消抖写入钥匙状态
  * @param amr 在位检测传感器设备句柄
  */
-static rt_uint8_t check_amr[APP_NUM][7] = { 0 };
 void check_key(WL164001_t board)
 {
     int sum, i, index ;
@@ -96,14 +98,13 @@ void check_key(WL164001_t board)
  * @brief 电磁铁状态检测消抖写入磁铁闭合情况
  * @param amr 在位检测传感器设备句柄
  */
-static rt_uint8_t check_elec[APP_NUM][7] = { 0 };
 void check_lock(WL164001_t board)
 {
     int sum, i, index ;
 
     rt_uint8_t lock_stat = 0;
 
-    for (index = 0; index < APP_NUM; index++) {
+    for (index = board.pos; index < APP_NUM_MAIN + board.pos; index++) {
         lock_stat = get_lock(index, board);
         sum = lock_stat;
         for(i = 0;i < 6;i++){

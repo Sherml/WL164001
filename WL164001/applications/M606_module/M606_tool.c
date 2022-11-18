@@ -11,20 +11,13 @@
 #include <tool.h>
 
 #define DBG_TAG "M606"
-#define DBG_LVL DBG_INFO
+#define DBG_LVL DBG_LOG
 #include <rtdbg.h>
 
 
 /* 定义全局的钥匙信息 */
-#ifdef USING_SLAVE_BOARD
-key_info_t key[12];
-#endif
-#ifndef USING_SLAVE_BOARD
-key_info_t key[6];
-#endif
-
-
-
+key_info_t key[APP_NUM];
+static rt_uint8_t check_id[APP_NUM] = { 0 };
 
 /**
  * @brief   用于从消息队列接收串口收到的数据，调试日志会输出接收到的数据长度，接收到的原始数据
@@ -76,7 +69,7 @@ static int str2hex(char *str, uint8_t *out)
  * @brief       用于将     单一M606输出    的原始数组分割，以便映射到具体的硬件设备
  * @param ch    原始的字符串数据
  */
-void code_split(char *ch, rt_off_t pos)
+static void code_split(char *ch, int pos)
 {
     const char *p = "{,}";
     char *ret;
@@ -96,23 +89,29 @@ void code_split(char *ch, rt_off_t pos)
 
 /**
  * @brief               用于获取码值，并更新
- * @param src_code      原始的字符串数据
+ * @param M606          获取码值的设备
  * @return
  */
 rt_err_t scan_rfid(M606_device_t M606)
 {
     int i = 0, j = 0;
-    static char data[ONE_DATA_MAXLEN];
-    memset(data,'\0',sizeof(ONE_DATA_MAXLEN*sizeof(char)));
 
+    static char data[ONE_DATA_MAXLEN];
+
+    memset(data,'\0',sizeof(ONE_DATA_MAXLEN*sizeof(char)));
     rt_strncpy(data, rfid_get(M606), ONE_DATA_MAXLEN);
     if (strlen(data) < 40) {
         rt_strncpy(data, rfid_get(M606), ONE_DATA_MAXLEN);
     }
-    rt_off_t pos = M606->pos;
-    code_split(data, pos);
+
+    code_split(data, M606->pos);
 
     for (i = pos; i < M606_RFID_NUM + pos; i++){
+        if ((memcmp(key[i].user_data.code,key[i].last_rfid_code,5)) && (check_id[i] < 3)) {
+            check_id[i]++;
+            continue;
+        }
+        check_id[i] = 0;
         for (j = 0; j < 5; j++){
             key[i].last_rfid_code[j] = key[i].cur_rfid_code[j];
             key[i].cur_rfid_code[j] = key[i].user_data.code[j];

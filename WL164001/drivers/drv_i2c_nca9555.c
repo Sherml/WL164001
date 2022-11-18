@@ -136,10 +136,11 @@ static const struct pin_list* get_list(char* pin)
 
     for (rt_uint8_t i = 0; i < ITEM_NUM(list); i++)
     {
-        if (!rt_strncmp(list[i].name, pin, sizeof(list[i].name) + 1))
+        if (!rt_strncmp(list[i].name, pin, sizeof(list[i].name)+1))
         {
             index = &list[i];
-            LOG_D("%s has been chosen.\n", index->name);
+            LOG_D("%s has been chosen.   ||||||||  %s source pin .   ||||||||  %d size.",
+                    index->name, pin, sizeof(list[i].name));
             goto __exit;
         }
     }
