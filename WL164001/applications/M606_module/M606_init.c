@@ -64,12 +64,12 @@ static M606_device_t M606_init(const char* uart_name, rt_off_t pos)
     rt_device_control(M606->dev, RT_DEVICE_CTRL_CONFIG, &config);
     rt_device_set_rx_indicate(M606->dev, M606_rx);
 
-    rt_mq_init(&M606->rx_mq,
-                "rx_mq",
-                M606->msg_pool,
-                sizeof(struct rx_msg),
-                sizeof(M606->msg_pool),
-                RT_IPC_FLAG_FIFO);
+//    rt_mq_init(&M606->rx_mq,
+//                "rx_mq",
+//                M606->msg_pool,
+//                sizeof(struct rx_msg),
+//                sizeof(M606->msg_pool),
+//                RT_IPC_FLAG_FIFO);
 
     rt_device_open(M606->dev, RT_DEVICE_FLAG_DMA_RX);
 

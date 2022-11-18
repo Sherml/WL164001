@@ -94,6 +94,7 @@ struct rx_msg
     rt_size_t size;
 };
 
+extern struct rt_semaphore rx_sem;
 
 M606_device_t M606_device_find(const char *M606_name);
 rt_err_t scan_rfid(M606_device_t M606);

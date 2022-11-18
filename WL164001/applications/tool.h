@@ -20,7 +20,7 @@
 #define APP_NUM_MAIN 6
 
 /* 副板使用设置 */
-#define USING_SLAVE_BOARD
+//#define USING_SLAVE_BOARD
 #ifdef USING_SLAVE_BOARD
 #define BOARD_NUM 2
 #define APP_NUM 12
