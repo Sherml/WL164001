@@ -63,18 +63,18 @@
 
 #define BOARD_config_0                   \
     {                                    \
-        .led_name       = "LED1",        \
-        .stat_name      = "STAT1",       \
-        .elec_name      = "ELEC1",       \
+        .led_name       = "LED0",        \
+        .stat_name      = "STAT0",       \
+        .elec_name      = "ELEC0",       \
         .M606_name      = "M606_0",      \
         .pos            = 0              \
     }
 
 #define BOARD_config_1                   \
     {                                    \
-        .led_name       = "LED2",        \
-        .stat_name      = "STAT2",       \
-        .elec_name      = "ELEC2",       \
+        .led_name       = "LED1",        \
+        .stat_name      = "STAT1",       \
+        .elec_name      = "ELEC1",       \
         .M606_name      = "M606_1",      \
         .pos            = 6              \
     }

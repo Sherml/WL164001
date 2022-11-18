@@ -100,8 +100,8 @@ void rfid_entry(void *parameter)
 {
     int i = 0;
     while (1){
+        /*RFID码值获取*/
         for (i = 0; i < BOARD_NUM; ++i) {
-            /*RFID码值获取*/
             scan_rfid(board[i].M606);
         }
         /*RFID码值打印*/

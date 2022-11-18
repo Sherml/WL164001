@@ -17,6 +17,10 @@
 #include <stdio.h>
 
 #define ITEM_NUM(items) sizeof(items) / sizeof(items[0])
+/* M606 码值更新状态 */
+#define M606_OK                      0               /**< 更新并打印 */
+#define M606_FAULT                   1               /**< 更新但全0，不打印 */
+#define M606_SAME                    2               /**< 不更新 */
 
 /*
  * 定义M606连续检测的RFID个数
@@ -26,7 +30,7 @@
 #define M606_RFID_NUM  6
 
 /* M606的串口输出帧长度，若不能达到此长度是RTT串口驱动满包分包，和半包分包中断的影响，需要屏蔽*/
-#define ONE_DATA_MAXLEN  81
+#define ONE_DATA_MAXLEN  80
 
 /* M606的串口输出帧格式*/
 #define RFID_SERIAL_CONFIG  \
@@ -37,7 +41,7 @@
     PARITY_NONE,            \
     BIT_ORDER_LSB,          \
     NRZ_NORMAL,             \
-    200,                    \
+    512,                    \
     0                       \
 }
 
@@ -71,7 +75,7 @@ struct M606_device
     rt_device_t dev;
     struct rt_messagequeue rx_mq;
     int pos;
-    char msg_pool[2000];
+    char msg_pool[4000];
 
     struct M606_ops ops;
 };

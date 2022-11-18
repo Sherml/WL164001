@@ -41,42 +41,42 @@
     {                                        \
         .addr       = RT_I2C_STAT_ADDR,      \
         .bus_name   = RT_I2C_NCA9555_NAME_1, \
-        .name       = "STAT1"                \
+        .name       = "STAT0"                \
     }
 
 #define NCA9555_config_1                     \
     {                                        \
         .addr       = RT_I2C_LED_ADDR,       \
         .bus_name   = RT_I2C_NCA9555_NAME_1, \
-        .name       = "LED1"                 \
+        .name       = "LED0"                 \
     }
 
 #define NCA9555_config_2                     \
     {                                        \
         .addr       = RT_I2C_ELEC_ADDR,      \
         .bus_name   = RT_I2C_NCA9555_NAME_1, \
-        .name       = "ELEC1"                \
+        .name       = "ELEC0"                \
     }
 
 #define NCA9555_config_3                     \
     {                                        \
         .addr       = RT_I2C_STAT_ADDR,      \
         .bus_name   = RT_I2C_NCA9555_NAME_2, \
-        .name       = "STAT2"                \
+        .name       = "STAT1"                \
     }
 
 #define NCA9555_config_4                     \
     {                                        \
         .addr       = RT_I2C_LED_ADDR,       \
         .bus_name   = RT_I2C_NCA9555_NAME_2, \
-        .name       = "LED2"                 \
+        .name       = "LED1"                 \
     }
 
 #define NCA9555_config_5                     \
     {                                        \
         .addr       = RT_I2C_ELEC_ADDR,      \
         .bus_name   = RT_I2C_NCA9555_NAME_2, \
-        .name       = "ELEC2"                \
+        .name       = "ELEC1"                \
     }
 
 //NCA9555IO_offset_config

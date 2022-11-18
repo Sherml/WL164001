@@ -31,10 +31,9 @@ static rt_err_t M606_rx(rt_device_t dev, rt_size_t size)
     msg.dev = dev;
     msg.size = size;
 
-    LOG_D("RX: %d\n",size);
     result = rt_mq_send(&M606->rx_mq, &msg, sizeof(msg));
     if ( result == -RT_EFULL){
-        rt_kprintf("%s message queue full！\n",dev->parent.name);
+//        rt_kprintf("%s message queue full！\n",dev->parent.name);
     }
     return result;
 }

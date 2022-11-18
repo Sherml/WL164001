@@ -11,7 +11,7 @@
 #include <tool.h>
 
 #define DBG_TAG "M606"
-#define DBG_LVL DBG_LOG
+#define DBG_LVL DBG_INFO
 #include <rtdbg.h>
 
 
@@ -36,9 +36,9 @@ static char* rfid_get(M606_device_t M606)
     if (result == RT_EOK){
         /* 从串口读取数据*/
         rx_length = rt_device_read(msg.dev, 0, rx_buffer, msg.size);
-        LOG_D("strlen RX: %d",rx_length);
+//        LOG_D("strlen RX: %d",rx_length);
     }
-    LOG_D("%s",rx_buffer);
+//    LOG_D("%s",rx_buffer);
     return rx_buffer;
 }
 
@@ -78,8 +78,14 @@ static void code_split(char *ch, int pos)
     ret = strtok(ch, p);
 
     while ((ret)&&(i<M606_RFID_NUM + pos)){
+        if (strlen(ret) != 10) {
+            ret = strtok(NULL, p);
+            i++;
+            continue;
+        }
         strncpy(key[i].user_data.ch, ret, 10);
-        LOG_D("key[%d]: %s ", i, ret);
+        LOG_D("key[%02d]: %s ", i, ret);
+
         str2hex(key[i].user_data.ch, key[i].user_data.code);
         ret = strtok(NULL, p);
         i++;
@@ -100,14 +106,14 @@ rt_err_t scan_rfid(M606_device_t M606)
 
     memset(data,'\0',sizeof(ONE_DATA_MAXLEN*sizeof(char)));
     rt_strncpy(data, rfid_get(M606), ONE_DATA_MAXLEN);
-    if (strlen(data) < 40) {
+    if (strlen(data) != ONE_DATA_MAXLEN+1 && strlen(data) != ONE_DATA_MAXLEN) {
         rt_strncpy(data, rfid_get(M606), ONE_DATA_MAXLEN);
     }
-
+    data[ONE_DATA_MAXLEN-1] = '\0';
     code_split(data, M606->pos);
 
-    for (i = pos; i < M606_RFID_NUM + pos; i++){
-        if ((memcmp(key[i].user_data.code,key[i].last_rfid_code,5)) && (check_id[i] < 3)) {
+    for (i = M606->pos; i < M606_RFID_NUM + M606->pos; i++){
+        if ((memcmp(key[i].user_data.code,key[i].cur_rfid_code,5)) && (check_id[i] < 2)) {
             check_id[i]++;
             continue;
         }
@@ -128,16 +134,19 @@ int rfid_printf(int i)
     int j = 0;
 
     if (rt_memcmp(key[i].last_rfid_code, key[i].cur_rfid_code, 5) == 0){
-        return 2;
-    }else {
+        return M606_SAME;
+    }else
+    {
         memcpy(key[i].last_rfid_code, key[i].cur_rfid_code, 5);
-        if (!(memcmp(&key[i].user_data.code[1], "\x00\x00\x00", 3)))
-            return 1;
-        rt_kprintf("KEY[%d] RFID:", i);
+//        /* 钥匙在位筛除 */
+//        if (key[i].key_status != key_in)
+//            return M606_FAULT;
+        /* 打印码值 */
+        rt_kprintf("KEY[%02d] RFID:", i);
         for (j = 0; j < 5; j++){
             rt_kprintf("%02X ", key[i].cur_rfid_code[j]);
         }
         rt_kprintf("\n");
-        return 0;
+        return M606_OK;
     }
 }

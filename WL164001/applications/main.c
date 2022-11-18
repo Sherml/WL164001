@@ -15,8 +15,8 @@
 
 #define DBG_TAG "main"
 #define DBG_LVL DBG_LOG
-
 #include <rtdbg.h>
+
 #include <tool.h>
 #include <drivers/pin.h>
 
