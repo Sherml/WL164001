@@ -21,7 +21,7 @@
         .name       = "LED",             \
         .entry      = led_entry,         \
         .stack_size = 1024,              \
-        .priority   = 17,                \
+        .priority   = 21,                \
         .tick       = 15,                \
     }
 
@@ -30,7 +30,7 @@
         .name       = "STAT",            \
         .entry      = stat_entry,        \
         .stack_size = 1024,              \
-        .priority   = 17,                \
+        .priority   = 21,                \
         .tick       = 15,                \
     }
 
@@ -39,7 +39,7 @@
         .name       = "ELEC",            \
         .entry      = elec_entry,        \
         .stack_size = 1024,              \
-        .priority   = 20,                \
+        .priority   = 21,                \
         .tick       = 15,                \
     }
 
@@ -48,7 +48,7 @@
         .name       = "RFID",            \
         .entry      = rfid_entry,        \
         .stack_size = 2048,              \
-        .priority   = 17,                \
+        .priority   = 20,                \
         .tick       = 15,                \
     }
 

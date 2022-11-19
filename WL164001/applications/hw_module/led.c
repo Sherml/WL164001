@@ -74,6 +74,8 @@ void key_status_led(WL164001_t board)
         if (key[i].key_status == key_in && key[i].last_key_status != key_in) {
             led_only_red(i, board);
             key[i].last_key_status = key[i].key_status;
+
+            rfid_printf(i);
         }
 
         if (key[i].key_status == key_out && key[i].last_key_status != key_out) {

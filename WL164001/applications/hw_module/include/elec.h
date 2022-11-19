@@ -14,7 +14,6 @@
 #include <drv_i2c_nca9555.h>
 
 rt_err_t elec_init(rt_device_t elec);
-rt_err_t elec_open(int i, WL164001_t board);
-rt_err_t elec_close(int i, WL164001_t board);
+rt_err_t elec_action(int i, lock_status_t stat);
 
 #endif /* APPLICATIONS_HW_MODULE_INCLUDE_ELEC_H_ */

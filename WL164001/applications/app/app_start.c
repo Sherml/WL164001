@@ -14,7 +14,7 @@
 #include    <rtdbg.h>
 
 rt_sem_t app_flag = RT_NULL;
-static app_module_t obj[] =
+app_module_t obj[] =
 {
         MOD_LED,
         MOD_AMR,
