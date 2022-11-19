@@ -33,6 +33,8 @@ WL164001_t board[BOARD_NUM]=
 };
 
 
+/// @brief 用于初始化设备
+/// @return 返回初始化情况
 int app_open()
 {
     int i;
@@ -56,6 +58,7 @@ int app_open()
         {
             LOG_E("can't allocate memory for thread %s",obj[i].name);
             free(obj[i].thread);
+            return -RT_ERROR;
         }else {
             rt_thread_startup(obj[i].thread);
         }

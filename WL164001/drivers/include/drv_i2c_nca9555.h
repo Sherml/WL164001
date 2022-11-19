@@ -16,17 +16,35 @@
 #ifndef APPLICATIONS_I2C_MODULE_I2C_MODULE_H_
 #define APPLICATIONS_I2C_MODULE_I2C_MODULE_H_
 
+/**
+ * @addtogroup NCA9555基本设定
+ */
+
+/**@{*/
+
+/* NCA9555所在I2C总线 */
 #define RT_I2C_NCA9555_NAME_1 "i2c1"
 #define RT_I2C_NCA9555_NAME_2 "i2c2"
+
+/* NCA9555地址 */
 #define RT_I2C_STAT_ADDR     0x20
 #define RT_I2C_LED_ADDR     0x21
 #define RT_I2C_ELEC_ADDR    0x22
 
-#define     OUTPUT      0
-#define     INPUT       1
-#define     INVERT      2
+/**@}*/
 
-//寄存器指令
+/**
+ * @addtogroup NCA9555控制定义
+ */
+
+/**@{*/
+
+/* NCA9555端口控制模式 */
+#define     OUTPUT      0                                       /**< 输出逻辑电平 */
+#define     INPUT       1                                       /**< 输入逻辑电平 */
+#define     INVERT      2                                       /**< 反转输入电平极性 */
+
+/* 寄存器指令 */
 #define  REGISTER_0_INPUT_PORT                  0X00
 #define  REGISTER_1_INPUT_PORT                  0X01
 #define  REGISTER_0_OUTPUT_PORT                 0X02
@@ -36,7 +54,19 @@
 #define  REGISTER_0_CONFIGURATION_PORT          0X06
 #define  REGISTER_1_CONFIGURATION_PORT          0X07
 
-//NCA9555_config
+/**@}*/
+
+/**
+ * @ingroup NCA9555基本设定
+ *
+ * @def NCA9555_config_0
+ * @def NCA9555_config_1
+ * @def NCA9555_config_2
+ * @def NCA9555_config_3
+ * @def NCA9555_config_4
+ * @def NCA9555_config_5
+ * 将单个NCA9555芯片抽象统一管理.
+ */
 #define NCA9555_config_0                     \
     {                                        \
         .addr       = RT_I2C_STAT_ADDR,      \
@@ -79,7 +109,27 @@
         .name       = "ELEC1"                \
     }
 
-//NCA9555IO_offset_config
+/**
+ * @ingroup NCA9555基本设定
+ *
+ * @def IO0_0
+ * @def IO0_1
+ * @def IO0_2
+ * @def IO0_3
+ * @def IO0_4
+ * @def IO0_5
+ * @def IO0_6
+ * @def IO0_7
+ * @def IO1_0
+ * @def IO1_1
+ * @def IO1_2
+ * @def IO1_3
+ * @def IO1_4
+ * @def IO1_5
+ * @def IO1_6
+ * @def IO1_7 
+ * 将NCA9555芯片16个引脚统一管理.
+ */
 #define IO0_0                \
     {                        \
         .name = "IO0_0",     \
@@ -176,12 +226,14 @@
         .offset = 15         \
     }
 
+/* 定义引脚信息对象 */
 struct pin_list
 {
     const char* name;
     rt_off_t offset;
 };
 
+/* 定义NCA9555对象 */
 struct nca9555_device
 {
     struct rt_i2c_bus_device* i2c_bus;
@@ -189,6 +241,7 @@ struct nca9555_device
 };
 typedef struct nca9555_device* nca_device_t;
 
+/* 链接I2C设备与NCA9555设备 */
 struct rt_nca9555
 {
     nca_device_t dev;
@@ -197,9 +250,16 @@ struct rt_nca9555
     const char* name;
 };
 
-nca_device_t nca9555_init(const char* i2c_bus_name, rt_uint8_t addr);
+/**
+ * @ingroup NCA9555基本设定
+ * @brief NCA9555的直接操作方法
+ */
 
+/**@{*/
+
+nca_device_t nca9555_init(const char* i2c_bus_name, rt_uint8_t addr);
 rt_err_t nca9555_write_data(nca_device_t dev, rt_uint8_t reg, rt_uint8_t len, rt_uint8_t* buf);
 rt_err_t nca9555_read_data(nca_device_t dev, rt_uint8_t reg, rt_uint8_t len, rt_uint8_t* buf);
 
+/**@}*/
 #endif /* APPLICATIONS_I2C_MODULE_I2C_MODULE_H_ */

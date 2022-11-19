@@ -51,11 +51,13 @@ static const struct pin_list list[] =
 rt_uint8_t set_pin[4] = { 0x00, 0x00, 0xff, 0xff };
 
 /**
- * This function can use to read nca9555 register, only-reading 1 and continuation-reading 2 register both are feasible
+ * @brief 用于读取NCA9555寄存器数据
  *
- * @param dev               the name of nca9555 device
- * @param reg               the register which would be read
- * @param len               the length of the data which would be read
+ * @param dev        NCA9555设备句柄
+ * @param reg        读取的寄存器
+ * @param len        寄存器读取长度
+ * @code
+ * @endcode
  * @param *buf              the pointer of the buffer
  *
  * @return                  the status of reading.
