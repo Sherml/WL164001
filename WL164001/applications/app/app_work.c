@@ -63,22 +63,28 @@ void elec_entry(void* parameter)
             LOG_E("check elec init.");
         }
     }
+    while (1) {
+//        for (i = 0; i < APP_NUM; ++i) {
+//            elec_action(i, unlock);
+//            rt_thread_mdelay(500);
+//            elec_action(i, lock);
+//            rt_thread_mdelay(500);
+//        }
+    }
+
 }
 
 static int operate_lock(int argc, char* argv[])
 {
-    int i = 0, j = 0;
+    int i = 0;
     if(argc == 2){
         i = atoi(argv[1]);
         if ((i>=0)&&(i<APP_NUM)){
             rt_kprintf("the NO.%d lock will be open...\n",i);
             rt_thread_mdelay(500);
-#ifdef USING_SLAVE_BOARD
-            for (j = 0; j < BOARD_NUM; ++j) {
-                elec_open(i, board[j]);
-            }
-#endif
-
+            elec_action(i, unlock);
+            rt_thread_mdelay(1000);
+            elec_action(i, lock);
         }else {
             goto __exit;
         }
@@ -105,9 +111,7 @@ void rfid_entry(void *parameter)
             scan_rfid(board[i].M606);
         }
         /*RFID码值打印*/
-        for (i = 0; i < APP_NUM; ++i) {
-            rfid_printf(i);
-        }
+
 
     }
 }
